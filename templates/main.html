@@ -93,7 +93,6 @@ $(document).ready(function(){
   if(render_format === 'top') { link_endpoint = 'top'; }
   if(render_format === 'recommend') { link_endpoint = 'recommend'; }
   if(render_format === 'friends') { link_endpoint = 'friends'; }
-  if(render_format === 'toptwtr') { link_endpoint = 'toptwtr'; }
   if(render_format === 'discussions') { link_endpoint = 'discussions'; }
 
   var time_ranges = ['day', '3days', 'week', 'month', 'year', 'alltime'];
@@ -127,18 +126,6 @@ $(document).ready(function(){
     }
   }
 
-  // time choices for top tweets
-  if(render_format === 'toptwtr') {
-    var tf = QueryString.timefilter; if(typeof tf === 'undefined') { tf = 'day'; } // default here is day
-    var time_ranges = ['day', 'week', 'month'];
-    var elt = d3.select('#recommend-time-choice');
-    for(var i=0;i<time_ranges.length;i++) {
-      var time_range = time_ranges[i];
-      var aelt = elt.append('a').attr('href', '/'+link_endpoint+'?'+'timefilter='+time_range);
-      var delt = aelt.append('div').classed('timechoice', true).html(time_txt[time_range]);
-      if(tf == time_range) { delt.classed('timechoice-selected', true); } // also render as chosen
-    }
-  }
 
   var xb = $("#xbanner");
   if(xb.length !== 0) {
@@ -148,7 +135,6 @@ $(document).ready(function(){
   // in top tab: color current choice
   if( render_format === 'recent') { d3.select('#tabrecent').classed('tab-selected', true); }
   if( render_format === 'top') { d3.select('#tabtop').classed('tab-selected', true); }
-  if( render_format === 'toptwtr') { d3.select('#tabtwtr').classed('tab-selected', true); }
   if( render_format === 'friends') { d3.select('#tabfriends').classed('tab-selected', true); }
   if( render_format === 'discussions') { d3.select('#tabdiscussions').classed('tab-selected', true); }
   if( render_format === 'recommend') { d3.select('#tabrec').classed('tab-selected', true); }
@@ -189,7 +175,8 @@ $(document).ready(function(){
 	<div id="tittxt">
 		<h1>Arxiv Sanity Preserver</h1>
 		Built in spare time by <a href="https://twitter.com/karpathy">@karpathy</a> to accelerate research.<br>
-		Serving last {{ totpapers }} papers from cs.[CV|CL|LG|AI|NE]/stat.ML
+		Modified in spare time by <a href="https://github.com/watertoiceXI">watertoiceXI</a> to accelerate research.<br>
+		Serving last {{ totpapers }} papers from cs.[AI|LG|NE], nlin.[CD|AO|PS], math.DS, cond-mat.[dis-nn|cond-mat.soft|cond-mat.stat-mech], stat.ML
 	</div>
 	</a>
 </div>
@@ -237,7 +224,6 @@ To nuke this message away for a long time click <span id="goaway" style="text-de
 <div id="pagebar">
   <div class="pagelink" id="tabrecent"><a href="/">most recent</a></div>
   <div class="pagelink" id="tabtop"><a href="/top">top recent</a></div>
-  <div class="pagelink" id="tabtwtr"><a href="/toptwtr">top hype</a></div>
   <div class="pagelink" id="tabfriends"><a href="/friends">friends</a></div>
   <div class="pagelink" id="tabdiscussions"><a href="/discussions">discussions</a></div>
   <div class="pagelink" id="tabrec"><a href="/recommend">recommended</a></div>

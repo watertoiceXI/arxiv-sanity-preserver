@@ -24,7 +24,7 @@ class Config(object):
     database_path = 'as.db'
     serve_cache_path = 'serve_cache.p'
     
-    beg_for_hosting_money = 1 # do we beg the active users randomly for money? 0 = no.
+    beg_for_hosting_money = 0 # do we beg the active users randomly for money? 0 = no.
     banned_path = 'banned.txt' # for twitter users who are banned
     tmp_dir = 'tmp'
 
@@ -81,10 +81,12 @@ def open_atomic(filepath, *args, **kwargs):
             if fsync:
                 f.flush()
                 os.fsync(file.fileno())
+        if os.path.isfile(filepath):
+            os.remove(filepath);
         os.rename(tmppath, filepath)
 
 def safe_pickle_dump(obj, fname):
-    with open_atomic(fname, 'wb') as f:
+    with open_atomic(fname, 'ab') as f:
         pickle.dump(obj, f, -1)
 
 

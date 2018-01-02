@@ -60,16 +60,18 @@ def tprepro(tweet_text):
 # -----------------------------------------------------------------------------
 
 # authenticate to twitter API
+'''
 keys = get_keys()
 api = twitter.Api(consumer_key=keys[0],
                   consumer_secret=keys[1],
                   access_token_key=keys[2],
                   access_token_secret=keys[3])
-
+'''
 # connect to mongodb instance
 client = pymongo.MongoClient()
 mdb = client.arxiv
 tweets = mdb.tweets # the "tweets" collection in "arxiv" database
+'''
 tweets_top1 = mdb.tweets_top1
 tweets_top7 = mdb.tweets_top7
 tweets_top30 = mdb.tweets_top30
@@ -77,7 +79,7 @@ print('mongodb tweets collection size:', tweets.count())
 print('mongodb tweets_top1 collection size:', tweets_top1.count())
 print('mongodb tweets_top7 collection size:', tweets_top7.count())
 print('mongodb tweets_top30 collection size:', tweets_top30.count())
-
+'''
 # load banned accounts
 banned = {}
 if os.path.isfile(Config.banned_path):

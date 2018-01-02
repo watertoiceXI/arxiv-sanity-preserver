@@ -403,21 +403,6 @@ def top():
                         msg='Top papers based on people\'s libraries:')
   return render_template('main.html', **ctx)
 
-@app.route('/toptwtr', methods=['GET'])
-def toptwtr():
-  """ return top papers """
-  ttstr = request.args.get('timefilter', 'day') # default is day
-  tweets_top = {'day':tweets_top1, 'week':tweets_top7, 'month':tweets_top30}[ttstr]
-  cursor = tweets_top.find().sort([('vote', pymongo.DESCENDING)]).limit(100)
-  papers, tweets = [], []
-  for rec in cursor:
-    if rec['pid'] in db:
-      papers.append(db[rec['pid']])
-      tweet = {k:v for k,v in rec.items() if k != '_id'}
-      tweets.append(tweet)
-  ctx = default_context(papers, render_format='toptwtr', tweets=tweets,
-                        msg='Top papers mentioned on Twitter over last ' + ttstr + ':')
-  return render_template('main.html', **ctx)
 
 @app.route('/library')
 def library():
@@ -676,26 +661,22 @@ if __name__ == "__main__":
   TOP_SORTED_PIDS = cache['top_sorted_pids']
   SEARCH_DICT = cache['search_dict']
 
+  
   print('connecting to mongodb...')
   client = pymongo.MongoClient()
   mdb = client.arxiv
-  tweets_top1 = mdb.tweets_top1
-  tweets_top7 = mdb.tweets_top7
-  tweets_top30 = mdb.tweets_top30
   comments = mdb.comments
   tags_collection = mdb.tags
   goaway_collection = mdb.goaway
   follow_collection = mdb.follow
-  print('mongodb tweets_top1 collection size:', tweets_top1.count())
-  print('mongodb tweets_top7 collection size:', tweets_top7.count())
-  print('mongodb tweets_top30 collection size:', tweets_top30.count())
   print('mongodb comments collection size:', comments.count())
   print('mongodb tags collection size:', tags_collection.count())
   print('mongodb goaway collection size:', goaway_collection.count())
   print('mongodb follow collection size:', follow_collection.count())
   
   TAGS = ['insightful!', 'thank you', 'agree', 'disagree', 'not constructive', 'troll', 'spam']
-
+  
+  
   # start
   if args.prod:
     # run on Tornado instead, since running raw Flask in prod is not recommended

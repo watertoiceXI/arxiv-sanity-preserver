@@ -30,10 +30,10 @@ idf = meta['idf']
 
 print('decorating the database with additional information...')
 for pid,p in db.items():
-  timestruct = dateutil.parser.parse(p['updated'])
-  p['time_updated'] = int(timestruct.strftime("%s")) # store in struct for future convenience
+  timestruct = dateutil.parser.parse(p['updated']);
+  p['time_updated'] = int(timestruct.strftime("%S")) # store in struct for future convenience
   timestruct = dateutil.parser.parse(p['published'])
-  p['time_published'] = int(timestruct.strftime("%s")) # store in struct for future convenience
+  p['time_published'] = int(timestruct.strftime("%S")) # store in struct for future convenience
 
 print('computing min/max time for all papers...')
 tts = [time.mktime(dateutil.parser.parse(p['updated']).timetuple()) for pid,p in db.items()]
